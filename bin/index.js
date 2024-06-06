@@ -123,7 +123,7 @@ try {
 
 
     console.log('Installing Dependencies...')
-    // execSync('composer update')
+    execSync('composer update')
 
 
     console.log('Finished!')

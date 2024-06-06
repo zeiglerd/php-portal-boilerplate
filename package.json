@@ -1,0 +1,28 @@
+{
+  "name": "php-portal-boilerplate",
+  "version": "0.0.1-alpha",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "php-portal-boilerplate": "bin/index.js"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zeiglerd/php-portal-boilerplate.git"
+  },
+  "author": "Dustin Zeigler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zeiglerd/php-portal-boilerplate/issues"
+  },
+  "homepage": "https://github.com/zeiglerd/php-portal-boilerplate#readme",
+  "devDependencies": {
+    "mustache": "^4.2.0"
+  }
+}

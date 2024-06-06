@@ -1,0 +1,48 @@
+{
+  "name": "zeiglerd/{{projectDomain}}",
+  "version": "0.0.1-alpha",
+  "type": "project",
+  "scripts": {
+    "build:local": "cd ./vendor/zeiglerd/php-engine && npx grunt build --env=local",
+    "build:prod": "cd ./vendor/zeiglerd/php-engine && npx grunt build --env=prod",
+    "build:qa": "cd ./vendor/zeiglerd/php-engine && npx grunt build --env=qa",
+    "deploy:prod": "cd ./vendor/zeiglerd/php-engine && npx grunt deploy --env=prod",
+    "deploy:qa": "cd ./vendor/zeiglerd/php-engine && npx grunt deploy --env=qa",
+    "dev:local": [
+      "Composer\\Config::disableProcessTimeout",
+      "cd ./vendor/zeiglerd/php-engine && npx grunt dev --env=local"
+    ],
+    "dev:prod": [
+      "Composer\\Config::disableProcessTimeout",
+      "cd ./vendor/zeiglerd/php-engine && npx grunt dev --env=prod"
+    ],
+    "dev:qa": [
+      "Composer\\Config::disableProcessTimeout",
+      "cd ./vendor/zeiglerd/php-engine && npx grunt dev --env=qa"
+    ],
+    "grunt": "cd ./vendor/zeiglerd/php-engine && npx grunt",
+    "post-install-cmd": "cd ./vendor/zeiglerd/php-engine && npm i",
+    "post-update-cmd": "cd ./vendor/zeiglerd/php-engine && npm i",
+    "test": "./vendor/bin/phpunit tests"
+  },
+  "autoload": {
+    "psr-4": {
+      "ZeiglerD\\{{projectNamePascalCase}}\\": "src/",
+      "ZeiglerD\\{{projectNamePascalCase}}\\UnitTests\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Dustin Zeigler"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/zeiglerd/php-engine.git"
+    }
+  ],
+  "require": {
+    "zeiglerd/php-engine": "dev-main"
+  }
+}

@@ -1,0 +1,12 @@
+$color-primary: {{colorPrimary}};
+$color-secondary: {{colorSecondary}};
+
+$color-light-primary: rgb(248,249,250);
+$color-light-secondary: darken($color-light-primary, 10%);
+$color-dark-primary: rgb(33,37,41);
+$color-dark-secondary: darken($color-dark-primary, 10%);
+
+$color-success: rgb(25,135,84);
+$color-danger: rgb(220,53,69);
+$color-warning: rgb(255,193,7);
+$color-info: rgb(13,202,240);

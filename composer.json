@@ -1,6 +1,6 @@
 {
   "name": "zeiglerd/{{projectDomain}}",
-  "version": "0.0.2-alpha",
+  "version": "0.0.1",
   "type": "project",
   "scripts": {
     "build:local": "cd ./vendor/zeiglerd/php-engine && npx grunt build --env=local",

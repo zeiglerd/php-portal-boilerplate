@@ -45,13 +45,15 @@ try {
 (async () => {
 
   try {
+    console.log('Generating Portal...')
+
     execSync(`git clone --depth 1 ${gitRepo} ${projectPath}`)
 
     process.chdir(projectPath)
     execSync('npm i')
 
 
-    console.log('Generating Portal...')
+    console.log('Cleaning Up...')
 
     const removeBuildFiles = (files) => {
       files.forEach((file) => {
@@ -59,6 +61,21 @@ try {
       })
     }
     removeBuildFiles(['.git', 'bin', 'node_modules', 'package.json', 'package-lock.json'])
+
+    const removeBuildLinesFromFileData = (file, lines) => {
+      let data = fs.readFileSync(`${projectPath}/${file}`, {
+        encoding: 'utf8',
+        flag: 'r'
+      })
+      lines.forEach((line) => {
+        data = data.replaceAll(line, '')
+      })
+      fs.writeFileSync(`${projectPath}/${file}`, data,'utf-8');
+    }
+    removeBuildLinesFromFileData('.gitignore', ['node_modules/\r\n'])
+
+
+    console.log('Injecting Configuration...')
 
     const injectVariablesIntoFilenames = (dir, map) => {
       const files = fs.readdirSync(dir)
@@ -109,21 +126,15 @@ try {
       projectNamePascalCase: ucwords(projectName).replace(/[^a-zA-Z0-9]/g, ''),
     }, ['ENGINE_THEME', 'ENGINE_THEME2'])
 
-    const removeBuildLinesFromFileData = (file, lines) => {
-      let data = fs.readFileSync(`${projectPath}/${file}`, {
-        encoding: 'utf8',
-        flag: 'r'
-      })
-      lines.forEach((line) => {
-        data = data.replaceAll(line, '')
-      })
-      fs.writeFileSync(`${projectPath}/${file}`, data,'utf-8');
-    }
-    removeBuildLinesFromFileData('.gitignore', ['node_modules/\r\n'])
-
 
     console.log('Installing Dependencies...')
     execSync('composer update')
+
+
+    console.log('Creating Git Repository...')
+    execSync('git init -b main')
+    execSync('git add .')
+    execSync('git commit -m "Initial commit"')
 
 
     console.log('Finished!')

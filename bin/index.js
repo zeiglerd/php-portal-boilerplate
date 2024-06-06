@@ -25,11 +25,7 @@ if (!projectName || !projectDomain || !projectTheme || !colorPrimary || !colorSe
   process.exit(1)
 }
 
-const snakecase = (words) => words.toLowerCase().replace(/[^a-zA-Z0-9-.]/g, '-')
-
-const projectNameSnakeCase = snakecase(projectDomain).replace(/^(php-portal-){1,}/, '')
-
-const projectPath = `${process.cwd()}/php-portal-${projectNameSnakeCase}`
+const projectPath = `${process.cwd()}/${projectDomain}`
 
 const gitRepo = package.repository.url.substring(4, package.repository.url.length - 4)
 

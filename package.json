@@ -22,7 +22,8 @@
     "url": "https://github.com/zeiglerd/php-portal-boilerplate/issues"
   },
   "homepage": "https://github.com/zeiglerd/php-portal-boilerplate#readme",
-  "devDependencies": {
+  "dependencies": {
+    "minimist": "^1.2.8",
     "mustache": "^4.2.0"
   }
 }

@@ -5,21 +5,23 @@ const { execSync } = require('child_process')
 const Mustache = require('mustache')
 const fs = require('fs')
 
-const projectName = process.argv[2]
-const projectDomain = process.argv[3]
-const projectTheme = process.argv[4]
-const colorPrimary = process.argv[5]
-const colorSecondary = process.argv[6]
+const argv = require('minimist')(process.argv.slice(2))
 
-if (!projectName
-  || !projectDomain
-  || !projectTheme
-  || !colorPrimary
-  || !colorSecondary
-) {
-  console.log('Must provide (in this order): projectName projectDomain projectTheme primaryColor secondaryColor')
+const projectName = argv.projectName ?? argv._.shift()
+const projectDomain = argv.projectDomain ?? argv._.shift()
+const projectTheme = argv.projectTheme ?? argv._.shift()
+const colorPrimary = argv.colorPrimary ?? argv._.shift()
+const colorSecondary = argv.colorSecondary ?? argv._.shift()
+
+if (!projectName || !projectDomain || !projectTheme || !colorPrimary || !colorSecondary) {
+  console.log('Must provide: projectName, projectDomain, projectTheme, colorPrimary, colorSecondary')
+  console.log('Note: Priority matters for omitted key(s).')
   console.log('For example:')
-  console.log('    $ npx php-portal-boilerplate ZeiglerD zeiglerd.com zeiglerd-theme rgb(105,103,206) rgb(89,89,89)')
+  console.log(`    $ npx php-portal-boilerplate --projectName="ZeiglerD" ^
+                                 --projectDomain="zeiglerd.com" ^
+                                 --projectTheme="zeiglerd-theme" ^
+                                 --colorPrimary="rgb(105,103,206)" ^
+                                 --colorSecondary="rgb(89,89,89)"`)
   process.exit(1)
 }
 
@@ -70,7 +72,7 @@ try {
       lines.forEach((line) => {
         data = data.replaceAll(line, '')
       })
-      fs.writeFileSync(`${projectPath}/${file}`, data,'utf-8');
+      fs.writeFileSync(`${projectPath}/${file}`, data,'utf-8')
     }
     removeBuildLinesFromFileData('.gitignore', ['node_modules/\r\n'])
 
@@ -106,7 +108,7 @@ try {
           return injectVariablesIntoFileData(filepath, map, ignore)
         }
         const data = fs.readFileSync(filepath, { encoding: 'utf8', flag: 'r' })
-        fs.writeFileSync(filepath, Mustache.render(data, map),'utf-8');
+        fs.writeFileSync(filepath, Mustache.render(data, map),'utf-8')
       })
     }
     // https://stackoverflow.com/a/38530325
@@ -124,11 +126,11 @@ try {
       qaDbName: `vriipxfb_qa_${dbName}`,
       qaDbUser: `vriipxfb_qa_${dbName}`,
       projectNamePascalCase: ucwords(projectName).replace(/[^a-zA-Z0-9]/g, ''),
-    }, ['ENGINE_THEME', 'ENGINE_THEME2'])
+    }, ['ENGINE_THEME'])
 
 
     console.log('Installing Dependencies...')
-    execSync('composer update')
+    execSync('composer update', { stdio: 'inherit' })
 
 
     console.log('Creating Git Repository...')
@@ -139,7 +141,7 @@ try {
 
     console.log('Finished!')
     console.log('')
-    console.log('To begin development, bootup your webstack, and run:')
+    console.log('To begin development, bootup your webstack, create relevant .env files, and run:')
     console.log('    $ composer dev:local')
 
   } catch (error) {

@@ -13,7 +13,6 @@ const projectName = argv.projectName
 const projectDomain = argv.projectDomain
 
 // Optional args
-const finalStep = argv.finalStep ?? 0
 const projectTheme = argv.projectTheme ?? 'one'
 const colorPrimary = argv.colorPrimary ?? 'rgb(105,103,206)'
 const colorSecondary = argv.colorSecondary ?? 'rgb(89,89,89)'
@@ -52,8 +51,7 @@ if (!projectName || !projectDomain) {
   console.log(`    - projectName (Type: string)
     - projectDomain (Type: string)`)
   console.log('Optional args:')
-  console.log(`    - finalStep (Type: number; Default: 0; Description: 0 = off, otherwise it will stop after step)
-    - projectTheme (Type: string; Default: one)
+  console.log(`    - projectTheme (Type: string; Default: one)
     - colorPrimary (Type: string; Default: rgb(105,103,206))
     - colorSecondary (Type: string; Default: rgb(89,89,89))
     - localFtpHost (Type: string)
@@ -111,15 +109,7 @@ const replaceFiledata = async (dir, file, texts) => {
 const removeFiledata = async (dir, file, texts) =>
   await replaceFiledata(dir, file, ...texts.map((text) => ({ [text]: '' })))
 
-let lastStep = 0
-const shouldExit = () => finalStep > lastStep
-
 const stepCloneBoilerplate = async (projectPath) => {
-  if (shouldExit()) {
-    return
-  }
-  lastStep++
-
   console.log('Cloning Boilerplate...')
 
   if (DEBUG && fs.existsSync(projectPath)) {
@@ -134,11 +124,6 @@ const stepCloneBoilerplate = async (projectPath) => {
 }
 
 const stepCleanUp = async (projectPath) => {
-  if (shouldExit()) {
-    return
-  }
-  lastStep++
-
   console.log('Cleaning Up...')
 
   await removeFiles(projectPath, ['.git', 'bin/index.js'])
@@ -154,22 +139,12 @@ const stepCleanUp = async (projectPath) => {
 }
 
 const stepPrepareBoilerplate = async (projectPath) => {
-  if (shouldExit()) {
-    return
-  }
-  lastStep++
-
   console.log('Preparing Boilerplate...')
 
   execSync('npm i', { stdio: 'inherit' })
 }
 
 const stepInjectConfiguration = async (projectPath) => {
-  if (shouldExit()) {
-    return
-  }
-  lastStep++
-
   console.log('Injecting Configuration...')
 
   const injectConfigurationIntoFilenames = async (dir, map) => {
@@ -245,22 +220,12 @@ const stepInjectConfiguration = async (projectPath) => {
 }
 
 const stepInstallDependencies = async () => {
-  if (shouldExit()) {
-    return
-  }
-  lastStep++
-
   console.log('Installing Dependencies...')
 
   execSync('composer update', { stdio: 'inherit' })
 }
 
 const stepCreateGitRepository = async () => {
-  if (shouldExit()) {
-    return
-  }
-  lastStep++
-
   console.log('Creating Git Repository...')
 
   execSync('git init -b main', { stdio: 'inherit' })

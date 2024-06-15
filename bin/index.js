@@ -8,42 +8,13 @@ const Mustache = require('mustache')
 
 const DEBUG = 0
 
-// Required args
-const projectName = argv.projectName
-const projectDomain = argv.projectDomain
-
-// Optional args
-const projectTheme = argv.projectTheme ?? 'one'
-const colorPrimary = argv.colorPrimary ?? 'rgb(105,103,206)'
-const colorSecondary = argv.colorSecondary ?? 'rgb(89,89,89)'
-const localFtpHost = argv.localFtpHost ?? 'your_local_ftp_host_here'
-const localFtpPort = argv.localFtpPort ?? 'your_local_ftp_port_here'
-const localFtpUser = argv.localFtpUser ?? 'your_local_ftp_user_here'
-const localDbHost = argv.localDbHost ?? 'your_local_db_host_here'
-const localDbPort = argv.localDbPort ?? 'your_local_db_port_here'
-const localDbPrefix = argv.localDbPrefix
-const localDbName = argv.localDbName ?? 'your_local_db_name_here'
-const localDbUser = argv.localDbUser ?? 'your_local_db_user_here'
-const qaFtpHost = argv.qaFtpHost ?? 'your_qa_ftp_host_here'
-const qaFtpPort = argv.qaFtpPort ?? 'your_qa_ftp_port_here'
-const qaFtpUser = argv.qaFtpUser ?? 'your_qa_ftp_user_here'
-const qaDbHost = argv.qaDbHost ?? 'your_qa_db_host_here'
-const qaDbPort = argv.qaDbPort ?? 'your_qa_db_port_here'
-const qaDbPrefix = argv.qaDbPrefix
-const qaDbName = argv.qaDbName ?? 'your_qa_db_name_here'
-const qaDbUser = argv.qaDbUser ?? 'your_qa_db_user_here'
-const prodFtpHost = argv.prodFtpHost ?? 'your_prod_ftp_host_here'
-const prodFtpPort = argv.prodFtpPort ?? 'your_prod_ftp_port_here'
-const prodFtpUser = argv.prodFtpUser ?? 'your_prod_ftp_user_here'
-const prodDbHost = argv.prodDbHost ?? 'your_prod_db_host_here'
-const prodDbPort = argv.prodDbPort ?? 'your_prod_db_port_here'
-const prodDbPrefix = argv.prodDbPrefix
-const prodDbName = argv.prodDbName ?? 'your_prod_db_name_here'
-const prodDbUser = argv.prodDbUser ?? 'your_prod_db_user_here'
-
 if (argv._.length) {
   console.log('Warning: Omitted keys are no longer allowed for args starting at version alpha-0.0.4 !!')
 }
+
+// Required args
+const projectName = argv.projectName
+const projectDomain = argv.projectDomain
 
 if (!projectName || !projectDomain) {
   console.log('Note: Configurations — including passwords — can be modified later in your .env files.')
@@ -58,7 +29,7 @@ if (!projectName || !projectDomain) {
     - localFtpPort (Type: number)
     - localFtpUser (Type: string)
     - localDbHost (Type: string)
-    - localDbPort (Type: number)
+    - localDbPort (Type: number; Default: 3306)
     - localDbPrefix (Type: string)
     - localDbName (Type: string)
     - localDbUser (Type: string)
@@ -66,7 +37,7 @@ if (!projectName || !projectDomain) {
     - qaFtpPort (Type: number)
     - qaFtpUser (Type: string)
     - qaDbHost (Type: string)
-    - qaDbPort (Type: number)
+    - qaDbPort (Type: number; Default: 3306)
     - qaDbPrefix (Type: string)
     - qaDbName (Type: string)
     - qaDbUser (Type: string)
@@ -74,7 +45,7 @@ if (!projectName || !projectDomain) {
     - prodFtpPort (Type: number)
     - prodFtpUser (Type: string)
     - prodDbHost (Type: string)
-    - prodDbPort (Type: number)
+    - prodDbPort (Type: number; Default: 3306)
     - prodDbPrefix (Type: string)
     - prodDbName (Type: string)
     - prodDbUser (Type: string)`)
@@ -93,6 +64,37 @@ if (!projectName || !projectDomain) {
       --localDbUser="your_local_db_user_here"`)
   process.exit(1)
 }
+
+const dbName = projectDomain.replaceAll(/[^a-zA-Z0-9]/g, '_')
+
+// Optional args
+const projectTheme = argv.projectTheme ?? 'one'
+const colorPrimary = argv.colorPrimary ?? 'rgb(105,103,206)'
+const colorSecondary = argv.colorSecondary ?? 'rgb(89,89,89)'
+const localFtpHost = argv.localFtpHost ?? 'your_local_ftp_host_here'
+const localFtpPort = argv.localFtpPort ?? 'your_local_ftp_port_here'
+const localFtpUser = argv.localFtpUser ?? 'your_local_ftp_user_here'
+const localDbHost = argv.localDbHost ?? 'your_local_db_host_here'
+const localDbPort = argv.localDbPort ?? '3306'
+const localDbPrefix = argv.localDbPrefix
+const localDbName = argv.localDbName ?? `local_${dbName}`
+const localDbUser = argv.localDbUser ?? 'your_local_db_user_here'
+const qaFtpHost = argv.qaFtpHost ?? 'your_qa_ftp_host_here'
+const qaFtpPort = argv.qaFtpPort ?? 'your_qa_ftp_port_here'
+const qaFtpUser = argv.qaFtpUser ?? 'your_qa_ftp_user_here'
+const qaDbHost = argv.qaDbHost ?? 'your_qa_db_host_here'
+const qaDbPort = argv.qaDbPort ?? '3306'
+const qaDbPrefix = argv.qaDbPrefix
+const qaDbName = argv.qaDbName ?? `qa_${dbName}`
+const qaDbUser = argv.qaDbUser ?? `qa_${dbName}`
+const prodFtpHost = argv.prodFtpHost ?? 'your_prod_ftp_host_here'
+const prodFtpPort = argv.prodFtpPort ?? 'your_prod_ftp_port_here'
+const prodFtpUser = argv.prodFtpUser ?? 'your_prod_ftp_user_here'
+const prodDbHost = argv.prodDbHost ?? 'your_prod_db_host_here'
+const prodDbPort = argv.prodDbPort ?? '3306'
+const prodDbPrefix = argv.prodDbPrefix
+const prodDbName = argv.prodDbName ?? dbName
+const prodDbUser = argv.prodDbUser ?? dbName
 
 const removeFiles = async (dir, files) => {
   files.forEach((file) => fs.rmSync(`${dir}/${file}`, { recursive: true }))

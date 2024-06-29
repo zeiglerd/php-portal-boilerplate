@@ -1,10 +1,10 @@
 {{=<% %>=}} // Change Mustache delimiter
 
-@import '../../../vendor/zeiglerd/php-engine/src/templates/{{ENGINE_THEME}}/mixins';
-@import './mixins';
-
 @import '../../../vendor/zeiglerd/php-engine/src/templates/{{ENGINE_THEME}}/variables';
 @import './variables';
+
+@import '../../../vendor/zeiglerd/php-engine/src/templates/{{ENGINE_THEME}}/mixins';
+@import './mixins';
 
 @import '../../../vendor/zeiglerd/php-engine/src/templates/{{ENGINE_THEME}}/functions';
 @import './functions';

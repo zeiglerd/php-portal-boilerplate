@@ -3,26 +3,28 @@
   "version": "0.0.1",
   "type": "project",
   "scripts": {
-    "build:local": "cd ./vendor/zeiglerd/php-engine && npx grunt build --env=local",
-    "build:prod": "cd ./vendor/zeiglerd/php-engine && npx grunt build --env=prod",
-    "build:qa": "cd ./vendor/zeiglerd/php-engine && npx grunt build --env=qa",
-    "deploy:prod": "cd ./vendor/zeiglerd/php-engine && npx grunt deploy --env=prod",
-    "deploy:qa": "cd ./vendor/zeiglerd/php-engine && npx grunt deploy --env=qa",
+    "build:local": "cd ./vendor/zeiglerd/php-engine && composer build:local",
+    "build:prod": "cd ./vendor/zeiglerd/php-engine && composer build:prod",
+    "build:qa": "cd ./vendor/zeiglerd/php-engine && composer build:qa",
+    "deploy:prod": "cd ./vendor/zeiglerd/php-engine && composer deploy:prod",
+    "deploy:qa": "cd ./vendor/zeiglerd/php-engine && composer deploy:qa",
     "dev:local": [
       "Composer\\Config::disableProcessTimeout",
-      "cd ./vendor/zeiglerd/php-engine && npx grunt dev --env=local"
+      "cd ./vendor/zeiglerd/php-engine && composer dev:local"
     ],
     "dev:prod": [
       "Composer\\Config::disableProcessTimeout",
-      "cd ./vendor/zeiglerd/php-engine && npx grunt dev --env=prod"
+      "cd ./vendor/zeiglerd/php-engine && composer dev:prod"
     ],
     "dev:qa": [
       "Composer\\Config::disableProcessTimeout",
-      "cd ./vendor/zeiglerd/php-engine && npx grunt dev --env=qa"
+      "cd ./vendor/zeiglerd/php-engine && composer dev:qa"
     ],
     "grunt": "cd ./vendor/zeiglerd/php-engine && npx grunt",
-    "post-install-cmd": "cd ./vendor/zeiglerd/php-engine && npm i",
-    "post-update-cmd": "cd ./vendor/zeiglerd/php-engine && npm i",
+    "post-install-cmd": "cd ./vendor/zeiglerd/php-engine && composer restore-engine-git && composer install",
+    "post-update-cmd": "cd ./vendor/zeiglerd/php-engine && composer restore-engine-git && composer update",
+    "pre-install-cmd": "[ -d './vendor/zeiglerd/php-engine/.git' ] && (cd ./vendor/zeiglerd/php-engine && composer store-engine-git) || echo >nul",
+    "pre-update-cmd": "[ -d './vendor/zeiglerd/php-engine/.git' ] && (cd ./vendor/zeiglerd/php-engine && composer store-engine-git) || echo >nul",
     "test": "./vendor/bin/phpunit tests"
   },
   "autoload": {

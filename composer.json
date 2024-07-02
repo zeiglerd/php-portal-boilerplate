@@ -21,10 +21,12 @@
       "cd ./vendor/zeiglerd/php-engine && composer dev:qa"
     ],
     "grunt": "cd ./vendor/zeiglerd/php-engine && npx grunt",
-    "post-install-cmd": "cd ./vendor/zeiglerd/php-engine && composer restore-engine-git && composer install",
-    "post-update-cmd": "cd ./vendor/zeiglerd/php-engine && composer restore-engine-git && composer update",
-    "pre-install-cmd": "[ -d './vendor/zeiglerd/php-engine/.git' ] && (cd ./vendor/zeiglerd/php-engine && composer store-engine-git) || echo >nul",
-    "pre-update-cmd": "[ -d './vendor/zeiglerd/php-engine/.git' ] && (cd ./vendor/zeiglerd/php-engine && composer store-engine-git) || echo >nul",
+    "restore-engine-git": "cd ./vendor/zeiglerd/php-engine && composer restore-engine-git",
+    "store-engine-git": "[ -d './vendor/zeiglerd/php-engine/.git' ] && (cd ./vendor/zeiglerd/php-engine && composer store-engine-git) || echo >nul",
+    "post-install-cmd": "composer restore-engine-git && composer install",
+    "post-update-cmd": "composer restore-engine-git && composer update",
+    "pre-install-cmd": "composer store-engine-git",
+    "pre-update-cmd": "composer store-engine-git",
     "test": "./vendor/bin/phpunit tests"
   },
   "autoload": {
